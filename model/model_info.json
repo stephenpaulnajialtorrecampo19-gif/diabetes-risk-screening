@@ -1,0 +1,59 @@
+{
+  "project": "Diabetes Risk Screening",
+  "dataset": {
+    "name": "CDC Diabetes Health Indicators",
+    "source": "UCI Machine Learning Repository, dataset 891 (BRFSS 2015)",
+    "original_records": 253680,
+    "records_after_cleaning": 229474
+  },
+  "target": "Diabetes_binary",
+  "features": [
+    "HighBP",
+    "HighChol",
+    "BMI",
+    "Smoker",
+    "Stroke",
+    "HeartDiseaseorAttack",
+    "PhysActivity",
+    "Fruits",
+    "Veggies",
+    "HvyAlcoholConsump",
+    "GenHlth",
+    "MentHlth",
+    "PhysHlth",
+    "DiffWalk",
+    "Sex",
+    "Age"
+  ],
+  "selected_model": "Random Forest",
+  "threshold": 0.5,
+  "test_size": 0.2,
+  "random_state": 42,
+  "sklearn_version": "1.6.1",
+  "results": [
+    {
+      "Model": "Baseline (most frequent)",
+      "Accuracy": 0.8471,
+      "Precision": 0.0,
+      "Recall": 0.0,
+      "F1": 0.0,
+      "ROC-AUC": 0.5
+    },
+    {
+      "Model": "Logistic Regression",
+      "Accuracy": 0.7138,
+      "Precision": 0.3176,
+      "Recall": 0.7588,
+      "F1": 0.4478,
+      "ROC-AUC": 0.8082
+    },
+    {
+      "Model": "Random Forest",
+      "Accuracy": 0.715,
+      "Precision": 0.3209,
+      "Recall": 0.774,
+      "F1": 0.4538,
+      "ROC-AUC": 0.8155
+    }
+  ]
+}
