@@ -16,8 +16,39 @@ def get_info():
     return predictor.load_model_info()
 
 
-st.title("🩺 Diabetes Risk Screening")
-st.caption("A screening aid built with machine learning. It is not a medical diagnosis.")
+# Simple styling: a calm header banner, a card look for the form and result numbers.
+st.markdown(
+    """
+    <style>
+    .app-header {
+        background: linear-gradient(135deg, #17496B 0%, #1F6F78 100%);
+        color: white;
+        padding: 1.6rem 1.8rem;
+        border-radius: 14px;
+        margin-bottom: 1.2rem;
+    }
+    .app-header h1 { color: white; margin: 0; padding: 0; font-size: 2rem; }
+    .app-header p { color: #D6E6EA; margin: 0.4rem 0 0 0; }
+    [data-testid="stForm"] {
+        background: white;
+        border: 1px solid #D5DFE5;
+        border-radius: 14px;
+        padding: 1.4rem;
+    }
+    [data-testid="stMetric"] {
+        background: white;
+        border: 1px solid #D5DFE5;
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+    }
+    </style>
+    <div class="app-header">
+        <h1>🩺 Diabetes Risk Screening</h1>
+        <p>A screening aid built with machine learning. It is not a medical diagnosis.</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 try:
     model = get_model()
