@@ -228,3 +228,10 @@ with tab_about:
 - **The score is not a probability.** The model was trained with balanced classes, so scores run higher than real rates. Use the score ranges table to see how often each range reported diabetes.
 """
     )
+
+st.divider()
+st.write("Tried the app? Tell us what you think.")
+st.link_button(
+    "Give feedback",
+    "https://docs.google.com/forms/d/e/1FAIpQLSeeF1P4_MnmRjKddfx4l8AjiZwwQhmbDby_xB7JVb4cPcvYRg/viewform",
+)
