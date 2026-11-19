@@ -55,5 +55,102 @@
       "F1": 0.4538,
       "ROC-AUC": 0.8155
     }
+  ],
+  "brier_score": 0.1793,
+  "brier_score_baseline": 0.1295,
+  "threshold_analysis": [
+    {
+      "Threshold": 0.2,
+      "Precision": 0.209,
+      "Recall": 0.972,
+      "F1": 0.344,
+      "Flagged (%)": 71.184
+    },
+    {
+      "Threshold": 0.3,
+      "Precision": 0.24,
+      "Recall": 0.933,
+      "F1": 0.382,
+      "Flagged (%)": 59.349
+    },
+    {
+      "Threshold": 0.4,
+      "Precision": 0.277,
+      "Recall": 0.871,
+      "F1": 0.42,
+      "Flagged (%)": 48.18
+    },
+    {
+      "Threshold": 0.5,
+      "Precision": 0.321,
+      "Recall": 0.774,
+      "F1": 0.454,
+      "Flagged (%)": 36.884
+    },
+    {
+      "Threshold": 0.6,
+      "Precision": 0.373,
+      "Recall": 0.64,
+      "F1": 0.471,
+      "Flagged (%)": 26.271
+    },
+    {
+      "Threshold": 0.7,
+      "Precision": 0.444,
+      "Recall": 0.456,
+      "F1": 0.45,
+      "Flagged (%)": 15.712
+    },
+    {
+      "Threshold": 0.8,
+      "Precision": 0.577,
+      "Recall": 0.204,
+      "F1": 0.301,
+      "Flagged (%)": 5.404
+    }
+  ],
+  "score_bands": [
+    {
+      "low": 0,
+      "high": 0.2,
+      "label": "0% to 20%",
+      "count": 13225,
+      "diabetes_rate": 1.5
+    },
+    {
+      "low": 0.2,
+      "high": 0.4,
+      "label": "20% to 40%",
+      "count": 10558,
+      "diabetes_rate": 6.7
+    },
+    {
+      "low": 0.4,
+      "high": 0.5,
+      "label": "40% to 50%",
+      "count": 5184,
+      "diabetes_rate": 13.2
+    },
+    {
+      "low": 0.5,
+      "high": 0.6,
+      "label": "50% to 60%",
+      "count": 4871,
+      "diabetes_rate": 19.3
+    },
+    {
+      "low": 0.6,
+      "high": 0.8,
+      "label": "60% to 80%",
+      "count": 9577,
+      "diabetes_rate": 32.0
+    },
+    {
+      "low": 0.8,
+      "high": 1.0001,
+      "label": "80% to 100%",
+      "count": 2480,
+      "diabetes_rate": 57.7
+    }
   ]
 }

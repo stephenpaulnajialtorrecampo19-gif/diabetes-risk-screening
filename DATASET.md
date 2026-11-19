@@ -50,3 +50,9 @@ Columns not used: CholCheck, AnyHealthcare, NoDocbcCost, Education, Income. They
 - Age in years is converted to the dataset's 13 age groups.
 - BMI is calculated from the height and weight that the user enters.
 - Inputs are validated before prediction (ranges, missing values, unrealistic BMI).
+
+## Limitations of the data
+- **Population:** The respondents are adults living in the United States (2015). The data may not represent the Philippine population, so the model's local applicability is unknown and must be validated with local data.
+- **Self-reported:** Both the inputs and the target come from survey answers, not from medical records or laboratory tests.
+- **Target variable:** `Diabetes_binary` is 1 for people who reported being told they have diabetes or prediabetes, and 0 otherwise. Undiagnosed diabetes is therefore labeled 0, and prediabetes and diabetes are merged into one class.
+- **Class imbalance:** About 14% of the records are 1. The training used class weights, so the model scores are not calibrated probabilities. `02_threshold_and_score_reliability.ipynb` evaluates the threshold and the reliability of the scores.

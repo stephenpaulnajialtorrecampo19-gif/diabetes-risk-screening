@@ -116,6 +116,23 @@ with tab_check:
             else:
                 st.success("Your answers look less similar to people who reported diabetes. Keep up healthy habits and get regular check-ups.")
 
+            band = predictor.get_score_band(result["score"], info)
+            if band is not None:
+                st.info(
+                    "**How to read this score:** in the test data, about "
+                    + str(band["diabetes_rate"]) + "% of the " + format(band["count"], ",")
+                    + " people with a score of " + band["label"]
+                    + " reported having diabetes or prediabetes. The score is not a personal probability."
+                )
+            summary = predictor.threshold_summary(info)
+            if summary is not None:
+                st.caption(
+                    "A score of " + str(int(info["threshold"] * 100)) + "% or higher is shown as Higher risk. "
+                    "On the test data, this setting found " + str(round(summary["Recall"] * 100)) + "% of the people who reported diabetes, "
+                    "but only " + str(round(summary["Precision"] * 100)) + "% of the people it flagged reported diabetes, so many flags are false alarms. "
+                    "It is meant for screening, not diagnosis."
+                )
+
             st.write("**Suggestions**")
             for tip in predictor.health_tips(data):
                 st.write("- " + tip)
@@ -151,7 +168,32 @@ with tab_about:
     st.dataframe(results.style.format("{:.3f}"))
     st.caption("The baseline always predicts 'no diabetes'. It looks accurate because most people in the data do not have diabetes, but it finds none of the people who do (recall 0).")
 
-    for file_name, title in [("confusion_matrix.png", "Confusion matrix"), ("roc_curve.png", "ROC curve"), ("feature_importance.png", "Most important inputs")]:
+    if info.get("threshold_analysis"):
+        st.write("**Choosing the threshold**")
+        st.write("People with a score at or above the threshold are shown as Higher risk. A lower threshold finds more people with diabetes (higher recall) but flags more people who do not have it (lower precision). This app uses " + str(int(info["threshold"] * 100)) + "% as its threshold.")
+        threshold_table = pd.DataFrame(info["threshold_analysis"]).set_index("Threshold")
+        st.dataframe(threshold_table.style.format("{:.3f}"))
+
+    if info.get("score_bands"):
+        st.write("**What each score range means in the test data**")
+        bands = pd.DataFrame(info["score_bands"])[["label", "count", "diabetes_rate"]]
+        bands.columns = ["Score range", "People in test set", "Reported diabetes (%)"]
+        st.dataframe(bands.set_index("Score range"))
+        if info.get("brier_score") is not None:
+            st.caption("Brier score of the raw scores: " + str(info["brier_score"]) + " (lower is better; always guessing the average gives " + str(info["brier_score_baseline"]) + "). The scores are not calibrated probabilities, so use the table above to interpret them.")
+
+    for file_name, title in [("confusion_matrix.png", "Confusion matrix"), ("roc_curve.png", "ROC curve"), ("threshold_analysis.png", "Precision and recall at different thresholds"), ("calibration_curve.png", "Reliability of the scores (calibration curve)"), ("feature_importance.png", "Most important inputs")]:
         path = os.path.join(predictor.BASE_DIR, "results", file_name)
         if os.path.exists(path):
             st.image(path, caption=title)
+
+    st.subheader("Limitations and responsible use")
+    st.markdown(
+        """
+- **Not a diagnosis.** The model has not been clinically validated. Only a blood test (such as fasting glucose or HbA1c) from a health professional can confirm diabetes.
+- **US data, not Philippine data.** The model learned from a 2015 survey of adults in the United States. Diet, healthcare access, body type and diabetes rates differ in the Philippines. For example, studies show that people of Asian descent can develop type 2 diabetes at lower BMI values, so the app may under-estimate risk for some Filipinos. It should be checked with local data before any real use.
+- **Self-reported answers.** All inputs and the target come from what survey respondents said about themselves, not from medical records or lab tests.
+- **The target is limited.** A person is labeled "diabetes" only if they reported being told they have diabetes or prediabetes. People who have diabetes but were never diagnosed are labeled as "no diabetes", so the model learns who reports a diagnosis, not who truly has the disease.
+- **The score is not a probability.** The model was trained with balanced classes, so scores run higher than real rates. Use the score ranges table to see how often each range reported diabetes.
+"""
+    )

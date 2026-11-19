@@ -96,3 +96,23 @@ def test_higher_risk_when_score_above_threshold():
 def test_tips_always_include_blood_test_advice():
     tips = predictor.health_tips(good_input())
     assert any("blood sugar test" in tip for tip in tips)
+
+
+def test_score_band_lookup():
+    info = {"score_bands": [
+        {"low": 0.0, "high": 0.5, "label": "0% to 50%", "count": 10, "diabetes_rate": 5.0},
+        {"low": 0.5, "high": 1.0001, "label": "50% to 100%", "count": 5, "diabetes_rate": 40.0},
+    ]}
+    assert predictor.get_score_band(0.2, info)["label"] == "0% to 50%"
+    assert predictor.get_score_band(0.5, info)["label"] == "50% to 100%"
+    assert predictor.get_score_band(1.0, info)["label"] == "50% to 100%"
+    assert predictor.get_score_band(0.2, {}) is None
+
+
+def test_threshold_summary():
+    info = {"threshold": 0.5, "threshold_analysis": [
+        {"Threshold": 0.4, "Precision": 0.3, "Recall": 0.8, "F1": 0.44},
+        {"Threshold": 0.5, "Precision": 0.32, "Recall": 0.77, "F1": 0.45},
+    ]}
+    assert predictor.threshold_summary(info)["Recall"] == 0.77
+    assert predictor.threshold_summary({"threshold": 0.5}) is None

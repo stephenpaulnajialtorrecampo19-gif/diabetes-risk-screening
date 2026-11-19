@@ -165,3 +165,23 @@ def health_tips(data):
         tips.append("Eating fruits and vegetables every day supports a healthy diet.")
     tips.append("A blood sugar test (such as fasting glucose or HbA1c) is the only way to know if you have diabetes.")
     return tips
+
+
+def get_score_band(score, info):
+    bands = info.get("score_bands")
+    if not bands:
+        return None
+    for band in bands:
+        if band["low"] <= score < band["high"]:
+            return band
+    return None
+
+
+def threshold_summary(info):
+    rows = info.get("threshold_analysis")
+    if not rows:
+        return None
+    for row in rows:
+        if abs(row["Threshold"] - info.get("threshold", 0.5)) < 0.0001:
+            return row
+    return None
