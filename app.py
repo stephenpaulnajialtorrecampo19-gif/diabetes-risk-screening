@@ -91,7 +91,7 @@ with tab_check:
         st.subheader("General well-being")
         gen_label = st.select_slider(
             "How would you rate your general health?",
-            options=["Excellent", "Very good", "Good", "Fair", "Poor"],
+            options=["Poor", "Fair", "Good", "Very good", "Excellent"],
             value="Good",
         )
         w1, w2 = st.columns(2)
@@ -150,7 +150,7 @@ with tab_check:
             band = predictor.get_score_band(result["score"], info)
             if band is not None:
                 st.info(
-                    "**How to read this score:** in the test data, about "
+                    "**How to read this score:** In the test data, about "
                     + str(band["diabetes_rate"]) + "% of the " + format(band["count"], ",")
                     + " people with a score of " + band["label"]
                     + " reported having diabetes or prediabetes. The score is not a personal probability."
@@ -164,8 +164,8 @@ with tab_check:
                     "It is meant for screening, not diagnosis."
                 )
 
-            st.write("**Suggestions**")
-            for tip in predictor.health_tips(data):
+            st.write("**Suggestions and recommendations**")
+            for tip in predictor.health_tips(data, result["higher_risk"]):
                 st.write("- " + tip)
 
             st.caption("The risk score comes from a machine learning model trained on survey data. It is not a probability of having diabetes and it is not a diagnosis.")

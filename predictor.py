@@ -148,11 +148,20 @@ def predict_risk(model, data, info):
     }
 
 
-def health_tips(data):
+def health_tips(data, higher_risk=False):
+    """Return a list of suggestions. Personal ones come first, then good habits for everyone."""
     tips = []
+
+    # 1. What to do next, based on the result
+    if higher_risk:
+        tips.append("Please visit a doctor or health center for a blood sugar test soon. This score is a reason to get tested, not a diagnosis.")
+    else:
+        tips.append("Keep up your healthy habits and get a regular check-up, at least once a year, even when your score is lower.")
+
+    # 2. Personal tips, based on the answers
     bmi = calculate_bmi(float(data["height_cm"]), float(data["weight_kg"]))
     if bmi >= 25:
-        tips.append("Your BMI is " + str(bmi) + ". A healthy weight lowers the chance of type 2 diabetes.")
+        tips.append("Your BMI is " + str(bmi) + ". Losing even a small amount of weight can lower the chance of type 2 diabetes.")
     if int(data["phys_activity"]) == 0:
         tips.append("Try to be physically active, for example brisk walking for 30 minutes on most days.")
     if int(data["high_bp"]) == 1:
@@ -161,8 +170,16 @@ def health_tips(data):
         tips.append("Have your cholesterol checked regularly and ask a doctor about diet changes.")
     if int(data["smoker"]) == 1:
         tips.append("Quitting smoking improves overall health and lowers many risks.")
+    if int(data["heavy_alcohol"]) == 1:
+        tips.append("Try to cut down on alcohol. Heavy drinking is bad for your overall health.")
     if int(data["fruits"]) == 0 or int(data["veggies"]) == 0:
         tips.append("Eating fruits and vegetables every day supports a healthy diet.")
+    if int(data["ment_health_days"]) >= 14 or int(data["phys_health_days"]) >= 14:
+        tips.append("You reported many days of poor health. Consider talking to a doctor or a counselor about how you feel.")
+
+    # 3. Good habits for everyone
+    tips.append("Choose water instead of sugary drinks, and go easy on sweets and fried food.")
+    tips.append("Aim for about 150 minutes of moderate activity each week, such as brisk walking.")
     tips.append("A blood sugar test (such as fasting glucose or HbA1c) is the only way to know if you have diabetes.")
     return tips
 
